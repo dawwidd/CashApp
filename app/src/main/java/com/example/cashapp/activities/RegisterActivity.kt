@@ -3,12 +3,10 @@ package com.example.cashapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.cashapp.R
 import com.example.cashapp.models.User
@@ -20,39 +18,43 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-class LoginActivity : AppCompatActivity() {
-
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
 
-        val loginButton = findViewById<Button>(R.id.loginButton)
-        val noAccountButton = findViewById<Button>(R.id.noAccountButton)
+        val registerButton = findViewById<Button>(R.id.registerButton)
 
-        loginButton.setOnClickListener() {
-            login()
-        }
-
-        noAccountButton.setOnClickListener() {
-            redirectToRegisterActivity()
+        registerButton.setOnClickListener() {
+            register()
         }
     }
 
-    private fun login() {
-        val editTextMail = findViewById<EditText>(R.id.editTextMail)
-        val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
+    private fun register() {
+        val editTextFirstName = findViewById<EditText>(R.id.editTextFirstNameR)
+        val editTextLastName = findViewById<EditText>(R.id.editTextLastNameR)
+        val editTextMail = findViewById<EditText>(R.id.editTextMailR)
+        val editTextPassword = findViewById<EditText>(R.id.editTextPasswordR)
+        val editTextConfirmPassword = findViewById<EditText>(R.id.editTextConfirmPassword)
+
+        val firstName = editTextFirstName.text.toString()
+        val lastName = editTextLastName.text.toString()
         val email = editTextMail.text.toString()
         val password = editTextPassword.text.toString()
+        val confirmPassword = editTextConfirmPassword.text.toString()
 
-        if(email.isEmpty() || password.isEmpty()) {
+        val user = User(email, password, firstName, lastName)
+
+        if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toaster.toast("All the fields have to be filled", applicationContext)
         }
+        else if(password != confirmPassword) {
+            Toaster.toast("Passwords don't match", applicationContext)
+        }
         else {
-            val user = User(email, password)
-
             lifecycleScope.launchWhenCreated {
                 val response = try {
-                    RetrofitInstance.api.login(user)
+                    RetrofitInstance.api.register(user)
                 } catch (e: IOException) {
                     Log.e("MainActivity", "IOException, you may not have internet connection")
                     Toaster.toast("You may not have internet connection or server is not available", applicationContext)
@@ -64,8 +66,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 if(response.isSuccessful && response.body() != null) {
-                    Toaster.toast("Logged in successfully", applicationContext)
-                    redirectToRegisterActivity()
+                    Toaster.toast("Registered successfully", applicationContext)
+                    redirectToLoginActivity()
                 }
                 else {
                     val errorMessage = response.errorBody()!!.string()
@@ -74,10 +76,11 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
-    private fun redirectToRegisterActivity() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+    private fun redirectToLoginActivity() {
+        onBackPressed()
+        finish()
     }
 }
