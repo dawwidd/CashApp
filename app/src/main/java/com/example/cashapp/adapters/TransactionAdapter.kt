@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cashapp.databinding.ItemTransactionBinding
 import com.example.cashapp.models.Transaction
+import java.text.SimpleDateFormat
 
 class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
@@ -45,8 +46,13 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
         holder.binding.apply {
             val transaction = transactions[position]
             tvAmount.text = transaction.amount.toString()
-            tvDate.text = transaction.date
-            tvCategoryName.text = transaction.category_id.toString()
+            var dateFormat = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z")
+            var newDate = dateFormat.parse(transaction.date)
+
+            dateFormat = SimpleDateFormat("dd.MM.YYYY")
+            var date = dateFormat.format(newDate)
+            tvDate.text = date
+            tvCategoryName.text = transaction.category_name
         }
     }
 }

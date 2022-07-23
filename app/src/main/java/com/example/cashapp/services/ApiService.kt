@@ -15,10 +15,10 @@ interface ApiService {
     suspend fun getUserTransactions(@Query("user_id") user_id: Int = 0) : Response<List<Transaction>>
 
     @POST("/login")
-    fun login(@Body user: User) : Call<BasicApiResponse>
+    suspend fun login(@Body user: User) : Response<BasicApiResponse>
 
     @POST("/register")
-    fun register(@Body user: User) : Call<BasicApiResponse>
+    suspend fun register(@Body user: User) : Response<BasicApiResponse>
 
 //    @POST("/categories")
 //    fun addCategory(@Body category: Category) :

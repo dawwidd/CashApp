@@ -1,5 +1,6 @@
 package com.example.cashapp.models
 
 data class BasicApiResponse(
-    var id: Int = 0
+    var id: Int = 0,
+    var error: String? = null
 )

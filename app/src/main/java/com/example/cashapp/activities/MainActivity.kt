@@ -10,6 +10,7 @@ import com.example.cashapp.R
 import com.example.cashapp.adapters.TransactionAdapter
 import com.example.cashapp.databinding.ActivityMainBinding
 import com.example.cashapp.services.RetrofitInstance
+import com.example.cashapp.utils.Toaster
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -34,10 +35,12 @@ class MainActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 Log.e("MainActivity", "IOException, you may not have internet connection")
                 binding.progressBar.isVisible = false
+                Toaster.toast("You may not have internet connection or server is not available", applicationContext)
                 return@launchWhenCreated
             } catch (e: HttpException) {
                 Log.e("MainActivity", "Invalid http response")
                 binding.progressBar.isVisible = false
+                Toaster.toast("Invalid http response", applicationContext)
                 return@launchWhenCreated
             }
 
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             else {
                 Log.e("MainActivity", "Response not successful")
             }
-            binding.progressBar.isVisible = false
+//            binding.progressBar.isVisible = false
         }
     }
 
