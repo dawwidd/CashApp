@@ -20,8 +20,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var transactionAdapter: TransactionAdapter
 
+    private var userId: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userId = intent.getIntExtra("userId", 0)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,8 +34,9 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenCreated {
             binding.progressBar.isVisible = true
+            binding.noTransactionsAlert.isVisible = false
             val response = try {
-                RetrofitInstance.api.getUserTransactions(1)
+                RetrofitInstance.api.getUserTransactions(userId)
             } catch (e: IOException) {
                 Log.e("MainActivity", "IOException, you may not have internet connection")
                 binding.progressBar.isVisible = false
@@ -44,13 +49,16 @@ class MainActivity : AppCompatActivity() {
                 return@launchWhenCreated
             }
 
-            if(response.isSuccessful && response.body() != null) {
+            if(response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
                 transactionAdapter.transactions = response.body()!!
+            }
+            else if (response.isSuccessful && response.body() != null && response.body()!!.isEmpty()){
+                binding.noTransactionsAlert.isVisible = true
             }
             else {
                 Log.e("MainActivity", "Response not successful")
             }
-//            binding.progressBar.isVisible = false
+            binding.progressBar.isVisible = false
         }
     }
 

@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if(response.isSuccessful && response.body() != null) {
                     Toaster.toast("Logged in successfully", applicationContext)
-                    redirectToRegisterActivity()
+                    redirectToMainActivity(response.body()!!.id)
                 }
                 else {
                     val errorMessage = response.errorBody()!!.string()
@@ -78,6 +78,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun redirectToRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun redirectToMainActivity(userId: Int) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userId", userId)
         startActivity(intent)
     }
 }
