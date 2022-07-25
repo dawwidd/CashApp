@@ -1,10 +1,6 @@
 package com.example.cashapp.models
 
-class Category {
-    var id: Int = 0
-    var name: String? = null
-
-    constructor(name: String) {
-        this.name = name
-    }
-}
+data class Category (
+    var id: Int,
+    var name: String
+)

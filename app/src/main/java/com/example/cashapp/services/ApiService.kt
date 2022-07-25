@@ -20,6 +20,6 @@ interface ApiService {
     @POST("/register")
     suspend fun register(@Body user: User) : Response<BasicApiResponse>
 
-//    @POST("/categories")
-//    fun addCategory(@Body category: Category) :
+    @GET("/categories")
+    suspend fun getCategories() : Response<List<Category>>
 }

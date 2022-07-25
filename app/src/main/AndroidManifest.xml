@@ -17,6 +17,9 @@
         android:theme="@style/Theme.CashApp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AddTransaction"
+            android:exported="false" />
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false" />
         <activity
@@ -30,8 +33,7 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

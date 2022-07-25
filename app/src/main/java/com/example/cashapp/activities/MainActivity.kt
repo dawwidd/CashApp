@@ -1,8 +1,10 @@
 package com.example.cashapp.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val addTransactionButton = findViewById<Button>(R.id.buttonAddTransaction)
+
+        addTransactionButton.setOnClickListener() {
+            redirectToAddTransactionActivity(userId)
+        }
 
         setupRecyclerView()
 
@@ -66,5 +74,11 @@ class MainActivity : AppCompatActivity() {
         transactionAdapter = TransactionAdapter()
         adapter = transactionAdapter
         layoutManager = LinearLayoutManager(this@MainActivity)
+    }
+
+    private fun redirectToAddTransactionActivity(userId: Int) {
+        val intent = Intent(this, AddTransaction::class.java)
+        intent.putExtra("userId", userId)
+        startActivity(intent)
     }
 }
