@@ -1,26 +1,29 @@
 package com.example.cashapp.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.telephony.SmsManager
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cashapp.R
 import com.example.cashapp.models.User
 import com.example.cashapp.services.RetrofitInstance
 import com.example.cashapp.utils.Toaster
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var editTextMail: EditText
+    private lateinit var editTextPassword: EditText
+    private var loginPreferences: SharedPreferences? = null
+    private var loginPrefsEditor: SharedPreferences.Editor? = null
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,10 @@ class LoginActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         val noAccountButton = findViewById<Button>(R.id.noAccountButton)
+        editTextMail = findViewById(R.id.editTextMail)
+        editTextPassword = findViewById(R.id.editTextPassword)
+
+        getUserDataFromSharedPreferences()
 
         loginButton.setOnClickListener() {
             login()
@@ -39,10 +46,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val editTextMail = findViewById<EditText>(R.id.editTextMail)
-        val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
-        val email = editTextMail.text.toString()
-        val password = editTextPassword.text.toString()
+        email = editTextMail.text.toString()
+        password = editTextPassword.text.toString()
 
         if(email.isEmpty() || password.isEmpty()) {
             Toaster.toast("All the fields have to be filled", applicationContext)
@@ -65,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if(response.isSuccessful && response.body() != null) {
                     Toaster.toast("Logged in successfully", applicationContext)
+                    saveUserDataToSharedPreferences()
                     redirectToMainActivity(response.body()!!.id)
                 }
                 else {
@@ -85,5 +91,22 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
+    }
+
+    private fun getUserDataFromSharedPreferences() {
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE)
+        loginPrefsEditor = loginPreferences?.edit()
+        editTextMail.setText(loginPreferences?.getString("email", ""))
+        editTextPassword.setText(loginPreferences?.getString("password", ""))
+        email = editTextMail.text.toString()
+        password = editTextPassword.text.toString()
+    }
+
+    private fun saveUserDataToSharedPreferences() {
+        email = editTextMail.text.toString()
+        password = editTextPassword.text.toString()
+        loginPrefsEditor?.putString("email", email)
+        loginPrefsEditor?.putString("password", password)
+        loginPrefsEditor?.commit()
     }
 }
