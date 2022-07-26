@@ -26,11 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        userId = intent.getIntExtra("userId", 0)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        userId = intent.getIntExtra("userId", 0)
 
         val addTransactionButton = findViewById<Button>(R.id.buttonAddTransaction)
 

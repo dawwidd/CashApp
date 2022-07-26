@@ -21,5 +21,8 @@ interface ApiService {
     suspend fun register(@Body user: User) : Response<BasicApiResponse>
 
     @GET("/categories")
-    suspend fun getCategories() : Response<List<Category>>
+    suspend fun getCategories(@Query("name") name: String? = null) : Response<List<Category>>
+
+    @POST("/transactions")
+    suspend fun addTransaction(@Body transaction: Transaction) : Response<BasicApiResponse>
 }
