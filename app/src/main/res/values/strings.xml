@@ -14,4 +14,7 @@
     <string name="title">Ca$hApp</string>
     <string name="edit">edit</string>
     <string name="delete">delete</string>
+    <string name="submit">submit</string>
+    <string name="income">INCOME</string>
+    <string name="outcome">OUTCOME</string>
 </resources>

@@ -25,6 +25,7 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var buttonSubmit: Button
     private lateinit var rgp: RadioGroup
+    private lateinit var rgpTransactionType: RadioGroup
     private lateinit var editTextAmount: EditText
 
     private var amount: Float? = null
@@ -39,6 +40,20 @@ class AddTransaction : AppCompatActivity() {
 
         buttonSubmit = findViewById(R.id.buttonSubmitTransaction)
 
+        lifecycleScope.launchWhenCreated {
+            rgpTransactionType = binding.rgTransactionType
+
+            val radioButtonView = layoutInflater.inflate(R.layout.category_button, null, false)
+
+            val rbIncome = radioButtonView.findViewById<RadioButton>(R.id.rbIncome)
+            val rbOutcome = radioButtonView.findViewById<RadioButton>(R.id.rbOutcome)
+        }
+
+
+        getCategories()
+    }
+
+    private fun getCategories() {
         lifecycleScope.launchWhenCreated {
             binding.progressBarAddTransaction.isVisible = true
             val response = try {
