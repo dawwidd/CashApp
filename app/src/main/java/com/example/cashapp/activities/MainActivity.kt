@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,37 +40,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupRecyclerView()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() = binding.rvTransactions.apply {
+        transactionAdapter = TransactionAdapter()
+        adapter = transactionAdapter
+        layoutManager = LinearLayoutManager(this@MainActivity)
         getTransactions()
-
-//        lifecycleScope.launchWhenCreated {
-//            binding.progressBar.isVisible = true
-//            binding.noTransactionsAlert.isVisible = false
-//            val response = try {
-//                RetrofitInstance.api.getUserTransactions(userId)
-//            } catch (e: IOException) {
-//                Log.e("MainActivity", "IOException, you may not have internet connection")
-//                binding.progressBar.isVisible = false
-//                Toaster.toast("You may not have internet connection or server is not available", applicationContext)
-//                return@launchWhenCreated
-//            } catch (e: HttpException) {
-//                Log.e("MainActivity", "Invalid http response")
-//                binding.progressBar.isVisible = false
-//                Toaster.toast("Invalid http response", applicationContext)
-//                return@launchWhenCreated
-//            }
-//
-//            if(response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
-//                transactionAdapter.transactions = response.body()!!
-//            }
-//            else if (response.isSuccessful && response.body() != null && response.body()!!.isEmpty()){
-//                binding.noTransactionsAlert.isVisible = true
-//            }
-//            else {
-//                Log.e("MainActivity", "Response not successful")
-//            }
-//            binding.progressBar.isVisible = false
-//        }
     }
 
     private fun getTransactions() {
@@ -103,20 +85,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() = binding.rvTransactions.apply {
-        transactionAdapter = TransactionAdapter()
-        adapter = transactionAdapter
-        layoutManager = LinearLayoutManager(this@MainActivity)
-    }
-
     private fun redirectToAddTransactionActivity(userId: Int) {
         val intent = Intent(this, AddTransaction::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        getTransactions()
     }
 }
