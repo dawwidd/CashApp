@@ -11,4 +11,7 @@
     <string name="no_transactions">No transactions recorded</string>
     <string name="amount">Amount</string>
     <string name="categories">Categories</string>
+    <string name="title">Ca$hApp</string>
+    <string name="edit">edit</string>
+    <string name="delete">delete</string>
 </resources>

@@ -13,6 +13,7 @@ import com.example.cashapp.adapters.TransactionAdapter
 import com.example.cashapp.databinding.ActivityMainBinding
 import com.example.cashapp.services.RetrofitInstance
 import com.example.cashapp.utils.Toaster
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         userId = intent.getIntExtra("userId", 0)
 
-        val addTransactionButton = findViewById<Button>(R.id.buttonAddTransaction)
+        val addTransactionButton = findViewById<FloatingActionButton>(R.id.fabAddTransaction)
 
         addTransactionButton.setOnClickListener() {
             redirectToAddTransactionActivity(userId)
@@ -39,6 +40,39 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
+        getTransactions()
+
+//        lifecycleScope.launchWhenCreated {
+//            binding.progressBar.isVisible = true
+//            binding.noTransactionsAlert.isVisible = false
+//            val response = try {
+//                RetrofitInstance.api.getUserTransactions(userId)
+//            } catch (e: IOException) {
+//                Log.e("MainActivity", "IOException, you may not have internet connection")
+//                binding.progressBar.isVisible = false
+//                Toaster.toast("You may not have internet connection or server is not available", applicationContext)
+//                return@launchWhenCreated
+//            } catch (e: HttpException) {
+//                Log.e("MainActivity", "Invalid http response")
+//                binding.progressBar.isVisible = false
+//                Toaster.toast("Invalid http response", applicationContext)
+//                return@launchWhenCreated
+//            }
+//
+//            if(response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
+//                transactionAdapter.transactions = response.body()!!
+//            }
+//            else if (response.isSuccessful && response.body() != null && response.body()!!.isEmpty()){
+//                binding.noTransactionsAlert.isVisible = true
+//            }
+//            else {
+//                Log.e("MainActivity", "Response not successful")
+//            }
+//            binding.progressBar.isVisible = false
+//        }
+    }
+
+    private fun getTransactions() {
         lifecycleScope.launchWhenCreated {
             binding.progressBar.isVisible = true
             binding.noTransactionsAlert.isVisible = false
@@ -79,5 +113,10 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AddTransaction::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getTransactions()
     }
 }
