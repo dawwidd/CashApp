@@ -45,8 +45,8 @@ class AddTransaction : AppCompatActivity() {
 
             val radioButtonView = layoutInflater.inflate(R.layout.category_button, null, false)
 
-            val rbIncome = radioButtonView.findViewById<RadioButton>(R.id.rbIncome)
-            val rbOutcome = radioButtonView.findViewById<RadioButton>(R.id.rbOutcome)
+//            val rbIncome = radioButtonView.findViewById<RadioButton>(R.id.rbIncome)
+//            val rbOutcome = radioButtonView.findViewById<RadioButton>(R.id.rbOutcome)
         }
 
 

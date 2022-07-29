@@ -9,7 +9,7 @@
     <string name="register">Register</string>
     <string name="no_account">I don\'t have an account</string>
     <string name="no_transactions">No transactions recorded</string>
-    <string name="amount">Amount</string>
+    <string name="amount">amount</string>
     <string name="categories">Categories</string>
     <string name="title">Ca$hApp</string>
     <string name="edit">edit</string>

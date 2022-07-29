@@ -13,6 +13,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="15dp"
         android:textSize="30sp"
+        android:inputType="numberDecimal"
+        android:hint="@string/amount"
         app:layout_constraintBottom_toTopOf="@+id/scrollViewCategories"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -77,10 +79,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:checked="true"
             android:text="@string/income"
+            android:textColor="@drawable/text_income_normal"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_normal"
+            android:background="@drawable/radio_income_selector"
             />
         <RadioButton
             android:id="@+id/rbOutcome"
@@ -88,9 +90,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:checked="true"
             android:text="@string/outcome"
+            android:textColor="@drawable/text_outcome_normal"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_normal"/>
+            android:background="@drawable/radio_outcome_selector"/>
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
