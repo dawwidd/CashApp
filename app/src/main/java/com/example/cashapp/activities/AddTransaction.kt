@@ -25,7 +25,9 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var buttonSubmit: Button
     private lateinit var rgp: RadioGroup
-    private lateinit var rgpTransactionType: RadioGroup
+    private lateinit var rgTransactionType: RadioGroup
+    private lateinit var rbIncome: RadioButton
+    private lateinit var rbOutcome: RadioButton
     private lateinit var editTextAmount: EditText
 
     private var amount: Float? = null
@@ -40,14 +42,20 @@ class AddTransaction : AppCompatActivity() {
 
         buttonSubmit = findViewById(R.id.buttonSubmitTransaction)
 
-        lifecycleScope.launchWhenCreated {
-            rgpTransactionType = binding.rgTransactionType
+        editTextAmount = findViewById(R.id.editTextAmount)
 
-            val radioButtonView = layoutInflater.inflate(R.layout.category_button, null, false)
+        rgTransactionType = findViewById(R.id.rgTransactionType)
+        rbIncome = findViewById(R.id.rbIncome)
+        rbOutcome = findViewById(R.id.rbOutcome)
 
-//            val rbIncome = radioButtonView.findViewById<RadioButton>(R.id.rbIncome)
-//            val rbOutcome = radioButtonView.findViewById<RadioButton>(R.id.rbOutcome)
-        }
+//        lifecycleScope.launchWhenCreated {
+//            rgTransactionType = binding.rgTransactionType
+//
+//            val radioButtonView = layoutInflater.inflate(R.layout.category_button, null, false)
+//
+////            val rbIncome = radioButtonView.findViewById<RadioButton>(R.id.rbIncome)
+////            val rbOutcome = radioButtonView.findViewById<RadioButton>(R.id.rbOutcome)
+//        }
 
 
         getCategories()
@@ -95,10 +103,16 @@ class AddTransaction : AppCompatActivity() {
     private fun submitTransaction() {
         val selectedRadioButtonId = rgp.checkedRadioButtonId
 
-        if(selectedRadioButtonId != -1) {
+        if(selectedRadioButtonId != -1 && editTextAmount.text.toString() != "") {
             val selectedRadioButton = findViewById<RadioButton>(selectedRadioButtonId);
 
             getChosenCategoryId(selectedRadioButton.text.toString())
+        }
+        else if (editTextAmount.text.toString() != ""){
+            Toaster.toast("A category needs to be chosen", applicationContext)
+        }
+        else if (selectedRadioButtonId != -1) {
+            Toaster.toast("Amount needs to be specified", applicationContext)
         }
     }
 
@@ -132,6 +146,10 @@ class AddTransaction : AppCompatActivity() {
     private fun addTransaction() {
         amount = findViewById<EditText>(R.id.editTextAmount).text.toString().toFloat()
         userId = intent.getIntExtra("userId", 0)
+
+        if(rbOutcome.isChecked) {
+            amount = -1 * amount!!
+        }
 
         val transaction = Transaction(amount = amount!!, category_id = categoryId!!, user_id = userId!!)
 
