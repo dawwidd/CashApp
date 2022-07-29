@@ -3,21 +3,61 @@ package com.example.cashapp.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cashapp.R
 import com.example.cashapp.databinding.ItemTransactionBinding
 import com.example.cashapp.models.Transaction
+import com.example.cashapp.services.RetrofitInstance
+import com.example.cashapp.utils.Toaster
+import retrofit2.HttpException
+import java.io.IOException
 import java.text.SimpleDateFormat
 import kotlin.coroutines.coroutineContext
 
 class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
+
     inner class TransactionViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        val buttonDeleteTransaction = itemView.findViewById<Button>(R.id.buttonDeleteTransaction)
+
+        fun init() {
+            setContentView(binding.root)
+            buttonDeleteTransaction.setOnClickListener() {
+                lifecycleScope.launchWhenCreated {
+                    val response = try {
+                        RetrofitInstance.api.getCategories()
+                    } catch (e: IOException) {
+                        Log.e("AddTransaction", "IOException, you may not have internet connection")
+                        Toaster.toast("You may not have internet connection or server is not available", applicationContext)
+                        return@launchWhenCreated
+                    } catch (e: HttpException) {
+                        Log.e("AddTransaction", "Invalid http response")
+                        Toaster.toast("Invalid http response", applicationContext)
+                        return@launchWhenCreated
+                    }
+
+                    if(response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
+                    }
+                    else {
+                        Log.e("AddTransaction", "Response not successful")
+                    }
+                    binding.progressBarAddTransaction.isVisible = false
+                }
+            }
+        }
+
         fun getContext(): Context {
             return itemView.context;
         }
@@ -66,6 +106,8 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
             var date = dateFormat.format(newDate)
             tvDate.text = date
             tvCategoryName.text = transaction.category_name
+
+            holder.init()
         }
     }
 }

@@ -25,4 +25,7 @@ interface ApiService {
 
     @POST("/transactions")
     suspend fun addTransaction(@Body transaction: Transaction) : Response<BasicApiResponse>
+
+    @DELETE("/transactions")
+    suspend fun removeTransaction(@Query("id") id: Int = 0) : Response<BasicApiResponse>
 }
