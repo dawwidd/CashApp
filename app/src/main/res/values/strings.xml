@@ -17,4 +17,5 @@
     <string name="submit">submit</string>
     <string name="income">INCOME</string>
     <string name="outcome">OUTCOME</string>
+    <string name="schedule_sms">set sms notification hour</string>
 </resources>

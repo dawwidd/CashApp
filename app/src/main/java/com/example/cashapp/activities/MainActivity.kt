@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun redirectToAddTransactionActivity(userId: Int) {
-        val intent = Intent(this, AddTransaction::class.java)
+        val intent = Intent(this, ScheduleSmsActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
     }
