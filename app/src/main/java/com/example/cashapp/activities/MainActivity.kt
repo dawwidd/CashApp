@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() = binding.rvTransactions.apply {
         transactionAdapter = TransactionAdapter()
+        transactionAdapter.setOnItemClickListener(object: TransactionAdapter.OnItemClickListener {
+            override fun onDeleteClick(id: Int) {
+                removeTransaction(id)
+            }
+        })
         adapter = transactionAdapter
         layoutManager = LinearLayoutManager(this@MainActivity)
         getTransactions()
@@ -77,6 +82,32 @@ class MainActivity : AppCompatActivity() {
             }
             else if (response.isSuccessful && response.body() != null && response.body()!!.isEmpty()){
                 binding.noTransactionsAlert.isVisible = true
+            }
+            else {
+                Log.e("MainActivity", "Response not successful")
+            }
+            binding.progressBar.isVisible = false
+        }
+    }
+
+    private fun removeTransaction(id: Int) {
+        lifecycleScope.launchWhenCreated {
+            val response = try {
+                RetrofitInstance.api.removeTransaction(id)
+            } catch (e: IOException) {
+                Log.e("MainActivity", "IOException, you may not have internet connection")
+                binding.progressBar.isVisible = false
+                Toaster.toast("You may not have internet connection or server is not available", applicationContext)
+                return@launchWhenCreated
+            } catch (e: HttpException) {
+                Log.e("MainActivity", "Invalid http response")
+                binding.progressBar.isVisible = false
+                Toaster.toast("Invalid http response", applicationContext)
+                return@launchWhenCreated
+            }
+
+            if(response.isSuccessful && response.body() != null) {
+                setupRecyclerView()
             }
             else {
                 Log.e("MainActivity", "Response not successful")

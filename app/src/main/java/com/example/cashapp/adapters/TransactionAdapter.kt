@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -25,35 +26,38 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import kotlin.coroutines.coroutineContext
 
-class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+class TransactionAdapter() : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
+    private lateinit var listener: OnItemClickListener
 
-    inner class TransactionViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
+    interface OnItemClickListener {
+        fun onDeleteClick(id: Int)
+    }
 
-        val buttonDeleteTransaction = itemView.findViewById<Button>(R.id.buttonDeleteTransaction)
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
 
-        fun init() {
-            setContentView(binding.root)
-            buttonDeleteTransaction.setOnClickListener() {
-                lifecycleScope.launchWhenCreated {
-                    val response = try {
-                        RetrofitInstance.api.getCategories()
-                    } catch (e: IOException) {
-                        Log.e("AddTransaction", "IOException, you may not have internet connection")
-                        Toaster.toast("You may not have internet connection or server is not available", applicationContext)
-                        return@launchWhenCreated
-                    } catch (e: HttpException) {
-                        Log.e("AddTransaction", "Invalid http response")
-                        Toaster.toast("Invalid http response", applicationContext)
-                        return@launchWhenCreated
-                    }
+    class TransactionViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
 
-                    if(response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
-                    }
-                    else {
-                        Log.e("AddTransaction", "Response not successful")
-                    }
-                    binding.progressBarAddTransaction.isVisible = false
+        fun bindView(transaction: Transaction, listener: OnItemClickListener) {
+            binding.apply {
+                tvAmount.text = transaction.amount.toString()
+                if(transaction.amount < 0) {
+                    tvAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
+                var dateFormat = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z")
+                var newDate = dateFormat.parse(transaction.date)
+
+                dateFormat = SimpleDateFormat("dd.MM.yyyy")
+                var date = dateFormat.format(newDate)
+                tvDate.text = date
+                tvCategoryName.text = transaction.category_name
+
+                val buttonDeleteTransaction = itemView.findViewById<ImageButton>(R.id.buttonDeleteTransaction)
+
+                buttonDeleteTransaction.setOnClickListener() {
+                    listener.onDeleteClick(transaction.id)
                 }
             }
         }
@@ -93,21 +97,7 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
-        holder.binding.apply {
-            val transaction = transactions[position]
-            tvAmount.text = transaction.amount.toString()
-            if(transaction.amount < 0) {
-                tvAmount.setTextColor(ContextCompat.getColor(holder.getContext(), R.color.red));
-            }
-            var dateFormat = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z")
-            var newDate = dateFormat.parse(transaction.date)
-
-            dateFormat = SimpleDateFormat("dd.MM.yyyy")
-            var date = dateFormat.format(newDate)
-            tvDate.text = date
-            tvCategoryName.text = transaction.category_name
-
-            holder.init()
-        }
+        val transaction = transactions[position]
+        holder.bindView(transaction, listener)
     }
 }
