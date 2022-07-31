@@ -40,6 +40,7 @@ class TransactionAdapter() : RecyclerView.Adapter<TransactionAdapter.Transaction
 
     class TransactionViewHolder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SimpleDateFormat")
         fun bindView(transaction: Transaction, listener: OnItemClickListener) {
             binding.apply {
                 tvAmount.text = transaction.amount.toString()
@@ -47,10 +48,10 @@ class TransactionAdapter() : RecyclerView.Adapter<TransactionAdapter.Transaction
                     tvAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
                 var dateFormat = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z")
-                var newDate = dateFormat.parse(transaction.date)
+                var newDate = dateFormat.parse(transaction.date!!)
 
                 dateFormat = SimpleDateFormat("dd.MM.yyyy")
-                var date = dateFormat.format(newDate)
+                var date = dateFormat.format(newDate!!)
                 tvDate.text = date
                 tvCategoryName.text = transaction.category_name
 

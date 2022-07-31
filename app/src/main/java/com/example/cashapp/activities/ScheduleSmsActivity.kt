@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TimePicker
 import com.example.cashapp.R
 import com.example.cashapp.utils.SmsScheduler
@@ -18,6 +19,7 @@ class ScheduleSmsActivity : AppCompatActivity() {
     private lateinit var timePicker: TimePicker
     private lateinit var buttonSetSmsHour: Button
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var editTextPhoneNumber: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class ScheduleSmsActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
+        editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber)
         timePicker = findViewById(R.id.timePickerSmsHour)
         timePicker.setIs24HourView(true)
         buttonSetSmsHour = findViewById(R.id.buttonSetSmsHour)
@@ -56,7 +59,14 @@ class ScheduleSmsActivity : AppCompatActivity() {
 
         alarmManager.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
-        Toaster.toast("Sms schedule is set", this)
+        if(editTextPhoneNumber.text.isNotEmpty()) {
+            SmsScheduler.phoneNumber = editTextPhoneNumber.text.toString()
+
+            Toaster.toast("Sms schedule has been set", this)
+        }
+        else {
+            Toaster.toast("Phone number should be given", this)
+        }
     }
 
     private fun setupToolbar() {

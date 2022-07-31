@@ -24,4 +24,7 @@
     <string name="activity_register">Register</string>
     <string name="activity_add_transaction">Add Transaction</string>
     <string name="activity_schedule_sms">Schedule sms reminder</string>
+
+    <string name="sms_reminder">Reminder to add your today\'s transaction into the app!</string>
+    <string name="phone_number">Phone number</string>
 </resources>
