@@ -91,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
+        finish()
     }
 
     private fun getUserDataFromSharedPreferences() {

@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ScrollView
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var addTransactionButton: FloatingActionButton
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     private var userId: Int = 0
 
@@ -33,13 +35,31 @@ class MainActivity : AppCompatActivity() {
 
         userId = intent.getIntExtra("userId", 0)
 
-        val addTransactionButton = findViewById<FloatingActionButton>(R.id.fabAddTransaction)
+        addTransactionButton = findViewById(R.id.fabAddTransaction)
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         addTransactionButton.setOnClickListener() {
             redirectToAddTransactionActivity(userId)
         }
 
         setupRecyclerView()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_action -> {
+                val intent = Intent(this, ScheduleSmsActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onResume() {
@@ -117,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun redirectToAddTransactionActivity(userId: Int) {
-        val intent = Intent(this, ScheduleSmsActivity::class.java)
+        val intent = Intent(this, AddTransactionActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
     }

@@ -20,7 +20,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 
-class AddTransaction : AppCompatActivity() {
+class AddTransactionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var buttonSubmit: Button

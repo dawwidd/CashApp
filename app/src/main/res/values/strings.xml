@@ -18,4 +18,5 @@
     <string name="income">INCOME</string>
     <string name="outcome">OUTCOME</string>
     <string name="schedule_sms">set sms notification hour</string>
+    <string name="transaction_list">Transaction list</string>
 </resources>

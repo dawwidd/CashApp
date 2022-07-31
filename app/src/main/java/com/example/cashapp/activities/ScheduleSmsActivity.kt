@@ -23,6 +23,7 @@ class ScheduleSmsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_schedule_sms)
 
         timePicker = findViewById(R.id.timePickerSmsHour)
+        timePicker.setIs24HourView(true)
         buttonSetSmsHour = findViewById(R.id.buttonSetSmsHour)
 
         buttonSetSmsHour.setOnClickListener() {
