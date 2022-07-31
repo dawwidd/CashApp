@@ -24,6 +24,8 @@ class ScheduleSmsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_schedule_sms)
 
         setupToolbar()
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         timePicker = findViewById(R.id.timePickerSmsHour)
         timePicker.setIs24HourView(true)

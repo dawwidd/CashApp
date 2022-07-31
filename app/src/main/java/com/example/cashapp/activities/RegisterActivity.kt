@@ -27,6 +27,8 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         setupToolbar()
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val registerButton = findViewById<Button>(R.id.registerButton)
 

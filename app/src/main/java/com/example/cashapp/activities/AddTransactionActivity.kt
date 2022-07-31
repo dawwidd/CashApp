@@ -42,6 +42,8 @@ class AddTransactionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         buttonSubmit = findViewById(R.id.buttonSubmitTransaction)
 
