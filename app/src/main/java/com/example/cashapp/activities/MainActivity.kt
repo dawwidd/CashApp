@@ -33,12 +33,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupToolbar()
+
         userId = intent.getIntExtra("userId", 0)
 
         addTransactionButton = findViewById(R.id.fabAddTransaction)
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
         addTransactionButton.setOnClickListener() {
             redirectToAddTransactionActivity(userId)
         }
@@ -140,5 +139,11 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AddTransactionActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = resources.getString(R.string.activity_main)
+        setSupportActionBar(toolbar)
     }
 }

@@ -18,7 +18,8 @@
         <entry key="app/src/main/res/drawable/text_color.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/text_income_normal.xml" value="0.232" />
         <entry key="app/src/main/res/drawable/text_outcome_normal.xml" value="0.233" />
-        <entry key="app/src/main/res/layout-land/activity_add_transaction.xml" value="0.31305114638447973" />
+        <entry key="app/src/main/res/layout-land/activity_add_transaction.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-land/activity_schedule_sms.xml" value="0.23809523809523808" />
         <entry key="app/src/main/res/layout-sw600dp/activity_startup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_transaction.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3197463768115942" />

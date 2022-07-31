@@ -24,10 +24,13 @@ class LoginActivity : AppCompatActivity() {
     private var loginPrefsEditor: SharedPreferences.Editor? = null
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        setupToolbar()
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         val noAccountButton = findViewById<Button>(R.id.noAccountButton)
@@ -109,5 +112,11 @@ class LoginActivity : AppCompatActivity() {
         loginPrefsEditor?.putString("email", email)
         loginPrefsEditor?.putString("password", password)
         loginPrefsEditor?.commit()
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = resources.getString(R.string.activity_login)
+        setSupportActionBar(toolbar)
     }
 }

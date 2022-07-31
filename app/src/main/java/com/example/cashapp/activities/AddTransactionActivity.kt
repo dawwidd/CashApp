@@ -29,6 +29,7 @@ class AddTransactionActivity : AppCompatActivity() {
     private lateinit var rbIncome: RadioButton
     private lateinit var rbOutcome: RadioButton
     private lateinit var editTextAmount: EditText
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     private var amount: Float? = null
     private var categoryId: Int? = null
@@ -39,6 +40,8 @@ class AddTransactionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupToolbar()
 
         buttonSubmit = findViewById(R.id.buttonSubmitTransaction)
 
@@ -182,5 +185,11 @@ class AddTransactionActivity : AppCompatActivity() {
     private fun redirectToMainActivity() {
         onBackPressed()
         finish()
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = resources.getString(R.string.activity_add_transaction)
+        setSupportActionBar(toolbar)
     }
 }

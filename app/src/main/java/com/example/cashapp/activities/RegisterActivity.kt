@@ -19,9 +19,14 @@ import retrofit2.Response
 import java.io.IOException
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        setupToolbar()
 
         val registerButton = findViewById<Button>(R.id.registerButton)
 
@@ -82,5 +87,11 @@ class RegisterActivity : AppCompatActivity() {
     private fun redirectToLoginActivity() {
         onBackPressed()
         finish()
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = resources.getString(R.string.activity_register)
+        setSupportActionBar(toolbar)
     }
 }

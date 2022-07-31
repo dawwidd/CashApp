@@ -17,10 +17,13 @@ class ScheduleSmsActivity : AppCompatActivity() {
 
     private lateinit var timePicker: TimePicker
     private lateinit var buttonSetSmsHour: Button
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule_sms)
+
+        setupToolbar()
 
         timePicker = findViewById(R.id.timePickerSmsHour)
         timePicker.setIs24HourView(true)
@@ -52,5 +55,11 @@ class ScheduleSmsActivity : AppCompatActivity() {
         alarmManager.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
         Toaster.toast("Sms schedule is set", this)
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = resources.getString(R.string.activity_schedule_sms)
+        setSupportActionBar(toolbar)
     }
 }
